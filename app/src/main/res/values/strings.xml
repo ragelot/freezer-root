@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Freezer</string>
+    <style name="Theme.Freezer" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
