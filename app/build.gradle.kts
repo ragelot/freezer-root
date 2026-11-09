@@ -12,13 +12,27 @@ android {
         applicationId = "com.example.freezer"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
+    }
+
+    // Clé de signature fixe : les mises à jour s'installent par-dessus la version précédente
+    signingConfigs {
+        create("shared") {
+            storeFile = file("freezer.keystore")
+            storePassword = "freezer123"
+            keyAlias = "freezer"
+            keyPassword = "freezer123"
+        }
     }
 
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("shared")
+        }
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("shared")
         }
     }
     compileOptions {

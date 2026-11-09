@@ -43,4 +43,17 @@ class AppRepository(private val context: Context) {
         }
         RootShell.exec(cmd).ok
     }
+
+    /** Arrête immédiatement l'application (sans la geler). */
+    suspend fun forceStop(pkg: String): Boolean = withContext(Dispatchers.IO) {
+        RootShell.exec("am force-stop $pkg").ok
+    }
+
+    /** Vide le cache de l'application (cache et code_cache). */
+    suspend fun clearCache(pkg: String): Boolean = withContext(Dispatchers.IO) {
+        RootShell.exec(
+            "rm -rf /data/data/$pkg/cache/* /data/data/$pkg/code_cache/* " +
+                "/data/user_de/0/$pkg/cache/* /data/user_de/0/$pkg/code_cache/*"
+        ).ok
+    }
 }

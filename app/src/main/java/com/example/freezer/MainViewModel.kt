@@ -57,6 +57,17 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun setFilter(f: Filter) = _state.update { it.copy(filter = f) }
     fun toggleSystem() = _state.update { it.copy(showSystem = !it.showSystem) }
     fun consumeMessage() = _state.update { it.copy(message = null) }
+    fun showMessage(text: String) = _state.update { it.copy(message = text) }
+
+    fun forceStop(item: AppItem) = viewModelScope.launch {
+        val ok = repo.forceStop(item.packageName)
+        showMessage(if (ok) "${item.label} arrêtée" else "Échec : vérifie l'accès root")
+    }
+
+    fun clearCache(item: AppItem) = viewModelScope.launch {
+        val ok = repo.clearCache(item.packageName)
+        showMessage(if (ok) "Cache de ${item.label} vidé" else "Échec : vérifie l'accès root")
+    }
 
     fun toggleFreeze(item: AppItem) = viewModelScope.launch {
         val target = !item.frozen
